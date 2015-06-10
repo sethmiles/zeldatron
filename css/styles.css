@@ -2,29 +2,50 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway:400,300,700);
 
 body {
-  background-color: #2c3e50;
+  margin: 0;
+  transition: all 1s;
+}
+
+#zeldatron {
+  transition: all 1s;
+  background-color: #27ae60;
   font-family: 'Raleway', sans-serif;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+#zeldatron.unauthenticated {
+  background-color: #2c3e50;
+  transition: all 1s;
+}
+
+.unauthenticated .loading {
+  top: calc(50% - 200px);
+  transition: all 1s;
 }
 
 .loading {
-  position: fixed;
-  top: 0;
   left: 0;
+  transition: all 1s;
+  position: fixed;
+  top: -400px;
   right: 0;
   bottom: 0;
 }
 
 .visible {
-  opacity 1;
-  pointer-events: all;
+  opacity: 1 !important;
+  pointer-events: all !important;
+  transition: all 1s !important;
 }
 
-.invisible {
+#auth-modal {
   opacity: 0;
+  transition: all 1s;
   pointer-events: none;
-}
-
-.auth {
   padding: 20px;
   background-color: #2980b9;
   color: white;
@@ -32,17 +53,25 @@ body {
   position: fixed;
   width: 500px;
   height: 230px;
-  left: calc(50% - 250px);
+  left: -540px;
   top: calc(50% - 115px);
 }
 
-.btn {
+.unauthenticated #auth-modal {
+  left: calc(50% - 270px);
+}
+
+.buttons {
+  margin: 0 auto;
+  width: 500px;
+}
+
+.btn, .game-btn {
   margin: 0 auto;
   cursor: pointer;
   -webkit-border-radius: 7;
   -moz-border-radius: 7;
   border-radius: 7px;
-  font-family: Arial;
   color: #ffffff;
   font-size: 20px;
   background: #71ad39;
@@ -50,9 +79,43 @@ body {
   text-decoration: none;
   width: 150px;
   text-align: center;
+  display: inline-block;
 }
+
+.game-btn {
+  font-family: 'Press Start 2P', cursive;
+  background: #2c3e50;
+  margin: 20px;
+}
+
+.game-btn:hover {
+
+}
+
+
 
 .btn:hover {
   background: #3cb0fd;
   text-decoration: none;
+}
+
+.game {
+  transition: all 1s;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.unauthenticated .game {
+  transition: all 1s;
+  top: 100%;
+}
+
+.game .title {
+  font-family: 'Press Start 2P', cursive;
+  font-size: 75px;
+  padding: 20px;
+  text-align: center;
 }

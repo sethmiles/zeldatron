@@ -5,21 +5,24 @@ var App = function() {
 
 App.prototype = {
 
-  elString: '<div id="app" class="unauthenticated">' +
+  elString: '<div id="zeldatron" class="unauthenticated">' +
               '<div class="loading">' +
                 '<div class="spinner">' +
                   '<div class="double-bounce1"></div>' +
                   '<div class="double-bounce2"></div>' +
                 '</div>' +
               '</div>' +
-              '<div class="auth">' +
+              '<div id="auth-modal" class="invisible">' +
                 '<h1>Woah! Looks like you\'re not authenticated!</h1>' +
                 '<p>We need to mess with stuff in your drive, click authenticate to let Zelda work his magic!</p>' +
                 '<div id="auth-btn" class="btn">Authenticate</div>' +
               '</div>' +
-              '<div class="buttons">' +
-                '<button>Reset</button>' +
-                '<button>Start</button>' +
+              '<div class="game">' +
+                '<div class="title">Zeldatron</div>' +
+                '<div class="buttons">' +
+                  '<div class="game-btn">Reset</div>' +
+                  '<div class="game-btn">Start</div>' +
+                '</div>' +
               '</div>' +
             '</div>',
 
@@ -48,7 +51,7 @@ App.prototype = {
   },
 
   start: function() {
-
+    this.el.classList.remove('unauthenticated');
   },
 
   onAuthComplete: function(response) {
@@ -56,7 +59,8 @@ App.prototype = {
       this.start();
     } else {
       // prevent memory leaks
-      // this.el.querySelector('#auth').removeEventListener('click', onAuthClick);
+      this.el.querySelector('#auth-modal').classList.add('visible');
+      this.el.querySelector('#auth-btn').removeEventListener('click', this.onAuthClick);
       this.el.querySelector('#auth-btn').addEventListener('click', this.onAuthClick);
       this.utils.authorize(this.onAuthComplete, true);
     }

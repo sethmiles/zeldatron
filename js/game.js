@@ -4,9 +4,10 @@ var Game = function() {
 
 Game.prototype = {
   init: function() {
-    window.addEventListener("keydown", this.uniKeyDown(e), false);
-    this.setBindings();  
-  }
+    this.setBindings();
+    window.addEventListener("keydown", this.uniKeyDown, false);
+  },
+
   uniKeyDown: function(e) {
     switch (e.keyCode) {
       case 37:
@@ -22,19 +23,21 @@ Game.prototype = {
         this.move('b');
         break;
     }
-  }
+  },
+
   reqListener: function() {
     console.log(this.responseText);
-  }
+  },
+
   move: function(dir) {
     var httpReq = new XMLHttpRequest();
     httpReq.onload = reqListener();
     httpReq.open('POST', 'craigdh.bld.corp.google.com:8080/move', false);
     httpReq.send(dir);
-  }
+  },
+
   setBindings: function() {
     this.uniKeyDown = this.uniKeyDown.bind(this);
     this.move = this.move.bind(this);
   }
-} 
-  
+}

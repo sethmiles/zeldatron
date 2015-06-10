@@ -41,7 +41,7 @@ App.prototype = {
     this.el.appendChild(this.board.el);
 
     // Create new instance of Game
-    // this.game = new Game();
+    this.game = new Game();
 
   },
 

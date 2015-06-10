@@ -32,7 +32,7 @@ Game.prototype = {
   move: function(dir) {
     var httpReq = new XMLHttpRequest();
     httpReq.onload = this.reqListener();
-    httpReq.open('POST', ‘http://craigdh.bld.corp.google.com:8080/move', false);
+    httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/move', false);
     httpReq.send(dir);
   },
 

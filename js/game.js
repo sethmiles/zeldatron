@@ -4,28 +4,37 @@ var Game = function() {
 
 Game.prototype = {
   init: function() {
-    var app = document.getElementById("app");
-    app.addEventListener("keydown", uniKeyDown(e), false);
+    window.addEventListener("keydown", this.uniKeyDown(e), false);
+    this.setBindings();  
   }
   uniKeyDown: function(e) {
     switch (e.keyCode) {
       case 37:
-        move('l');
+        this.move('l');
         break;
       case 38:
-        move('u');
+        this.move('t');
         break;
       case 39:
-        move('r');
+        this.move('r');
         break;
       case 40:
-        move('d');
+        this.move('b');
         break;
     }
   }
+  reqListener: function() {
+    console.log(this.responseText);
+  }
   move: function(dir) {
-   xmlhttp.open('POST', '/move', false);
-   xmlhttp.send(dir);
+    var httpReq = new XMLHttpRequest();
+    httpReq.onload = reqListener();
+    httpReq.open('POST', 'craigdh.bld.corp.google.com:8080/move', false);
+    httpReq.send(dir);
+  }
+  setBindings: function() {
+    this.uniKeyDown = this.uniKeyDown.bind(this);
+    this.move = this.move.bind(this);
   }
 } 
   

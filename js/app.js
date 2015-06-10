@@ -36,13 +36,11 @@ App.prototype = {
 
     this.utils.authorize(this.onAuthComplete, false);
 
-    this.board = new Board();
-
-    this.el.appendChild(this.board.el);
-
     // Create new instance of Game
     this.game = new Game();
 
+    this.board = new Board();
+    this.el.querySelector('.game').appendChild(this.board.el);
   },
 
   setBindings: function() {
@@ -51,7 +49,29 @@ App.prototype = {
   },
 
   start: function() {
+    var that = this;
+
+    // This is used for effect and to ensure that everything is already attached to the DOM
+    setTimeout(function(){
+      that.board.build();
+    }, 500);
+
     this.el.classList.remove('unauthenticated');
+    var id = this.utils.getParam('id');
+    if (id) {
+      this.utils.load(id, this.onFileLoaded, this.initializeFile)
+    } else {
+
+    }
+  },
+
+  onFileLoaded: function(doc) {
+    this.doc = doc;
+    this.board.setDoc(doc);
+  },
+
+  initializeFile: function(model) {
+    model.getRoot().set('boardState', {});
   },
 
   onAuthComplete: function(response) {

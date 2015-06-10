@@ -15,6 +15,7 @@ body {
   right: 0;
   left: 0;
   bottom: 0;
+  overflow: hidden;
 }
 
 #zeldatron.unauthenticated {
@@ -63,7 +64,7 @@ body {
 
 .buttons {
   margin: 0 auto;
-  width: 500px;
+  width: 460px;
 }
 
 .btn, .game-btn {
@@ -118,4 +119,18 @@ body {
   font-size: 75px;
   padding: 20px;
   text-align: center;
+}
+
+svg {
+  margin: 0 auto;
+}
+
+svg .tile {
+  stroke-width: 1px;
+  stroke: #27ae60;
+  fill: #fff;
+}
+
+#board {
+  margin: 0 auto;
 }

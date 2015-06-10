@@ -36,6 +36,13 @@ Game.prototype = {
     httpReq.send(dir);
   },
 
+  reset: function(id) {
+    var httpReq = new XMLHttpRequest();
+    httpReq.onload = this.reqListener();
+    httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/reset', false);
+    httpReq.send({ Token: gapi.auth.getToken().access_token, DocId: id});
+  },
+
   setBindings: function() {
     this.uniKeyDown = this.uniKeyDown.bind(this);
     this.move = this.move.bind(this);

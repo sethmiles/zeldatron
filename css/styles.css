@@ -1,0 +1,58 @@
+@import url(http://fonts.googleapis.com/css?family=Press+Start+2P); /* font-family: 'Press Start 2P', cursive; */
+@import url(http://fonts.googleapis.com/css?family=Raleway:400,300,700);
+
+body {
+  background-color: #2c3e50;
+  font-family: 'Raleway', sans-serif;
+}
+
+.loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.visible {
+  opacity 1;
+  pointer-events: all;
+}
+
+.invisible {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.auth {
+  padding: 20px;
+  background-color: #2980b9;
+  color: white;
+  border-radius: 10px;
+  position: fixed;
+  width: 500px;
+  height: 230px;
+  left: calc(50% - 250px);
+  top: calc(50% - 115px);
+}
+
+.btn {
+  margin: 0 auto;
+  cursor: pointer;
+  -webkit-border-radius: 7;
+  -moz-border-radius: 7;
+  border-radius: 7px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  background: #71ad39;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  width: 150px;
+  text-align: center;
+}
+
+.btn:hover {
+  background: #3cb0fd;
+  text-decoration: none;
+}

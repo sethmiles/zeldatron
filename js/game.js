@@ -1,8 +1,12 @@
-var Game = function() {
+var Game = function(app) {
+  this.app = app;
   this.init();
 }
 
 Game.prototype = {
+
+  gameInProgress: false,
+
   init: function() {
     this.setBindings();
     window.addEventListener("keydown", this.uniKeyDown, false);
@@ -29,6 +33,25 @@ Game.prototype = {
     console.log(this.responseText);
   },
 
+  toggle: function() {
+    if(this.gameInProgress) {
+      this.endGame();
+    } else {
+      this.startGame();
+    }
+    this.reset();
+  },
+
+  startGame: function() {
+    this.reset();
+    this.gameInProgress = true;
+  },
+
+  endGame: function() {
+    this.end();
+    this.gameInProgress = false;
+  },
+
   move: function(dir) {
     var httpReq = new XMLHttpRequest();
     httpReq.onload = this.reqListener();
@@ -36,11 +59,11 @@ Game.prototype = {
     httpReq.send(dir);
   },
 
-  reset: function(id) {
+  reset: function() {
     var httpReq = new XMLHttpRequest();
     httpReq.onload = this.reqListener();
     httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/reset', false);
-    httpReq.send({ Token: gapi.auth.getToken().access_token, DocId: id});
+    httpReq.send({ Token: gapi.auth.getToken().access_token, DocId: app.docId});
   },
 
   setBindings: function() {

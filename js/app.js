@@ -20,8 +20,7 @@ App.prototype = {
               '<div class="game">' +
                 '<div class="title">Zeldatron</div>' +
                 '<div class="buttons">' +
-                  '<div class="game-btn">Reset</div>' +
-                  '<div class="game-btn">Start</div>' +
+                  '<div id="startButton" class="game-btn">Start</div>' +
                 '</div>' +
               '</div>' +
             '</div>',
@@ -37,37 +36,45 @@ App.prototype = {
     this.utils.authorize(this.onAuthComplete, false);
 
     // Create new instance of Game
-    this.game = new Game();
-
-    this.board = new Board();
+    this.game = new Game(this);
+    this.board = new Board(this);
     this.el.querySelector('.game').appendChild(this.board.el);
+    this.el.querySelector('#startButton').addEventListener('click', this.toggleGameState);
   },
 
   setBindings: function() {
     this.onAuthClick = this.onAuthClick.bind(this);
     this.onAuthComplete = this.onAuthComplete.bind(this);
+    this.onFileLoaded = this.onFileLoaded.bind(this);
+    this.toggleGameState = this.toggleGameState.bind(this);
   },
 
   start: function() {
     var that = this;
-
-    // This is used for effect and to ensure that everything is already attached to the DOM
-    setTimeout(function(){
-      that.board.build();
-    }, 500);
-
-    this.el.classList.remove('unauthenticated');
     var id = this.utils.getParam('id');
     if (id) {
+      id = id.replace('/','');
+      this.docId = id;
       this.utils.load(id, this.onFileLoaded, this.initializeFile)
     } else {
-
+      this.utils.createRealtimeFile('Zeldatron Game', function(file) {
+        if (file.id) {
+          this.docId = id;
+          history.pushState({}, '', '?id=' + file.id);
+          that.utils.load(file.id, that.onFileLoaded, that.initializeFile);
+        }
+      });
     }
   },
 
   onFileLoaded: function(doc) {
+    var that = this;
     this.doc = doc;
-    this.board.setDoc(doc);
+    this.el.classList.remove('unauthenticated');
+    // This is used for effect and to ensure that everything is already attached to the DOM
+    setTimeout(function(){
+      that.board.build();
+    }, 500);
   },
 
   initializeFile: function(model) {
@@ -84,6 +91,10 @@ App.prototype = {
       this.el.querySelector('#auth-btn').addEventListener('click', this.onAuthClick);
       this.utils.authorize(this.onAuthComplete, true);
     }
+  },
+
+  toggleGameState: function() {
+    this.game.toggle();
   },
 
   onAuthClick: function() {

@@ -1,7 +1,25 @@
+.enemy {
+  width: 498px;
+  height: 369px;
+  background-image: url('../img/enemy.png');
+}
+
+.rock {
+  width: 500px;
+  height: 335px;
+  background-image: url('../img/rock.png');
+}
+
+.tree {
+  width: 340px;
+  height: 411px;
+  background-image: url('../img/tree.png');
+}
+
 .player {
   width: 56px;
   height: 72px;
-  background: url('../img/standingSprite.png');
+  background-image: url('../img/standingSprite.png');
 }
 
 .walk {

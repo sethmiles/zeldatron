@@ -1,0 +1,137 @@
+.walk {
+  width: 56px;
+  height: 73px;
+  background: url('../img/sprites.png');
+}
+
+.bottom {
+  -webkit-animation: bottom .8s steps(4) infinite;
+     -moz-animation: bottom .8s steps(4) infinite;
+      -ms-animation: bottom .8s steps(4) infinite;
+       -o-animation: bottom .8s steps(4) infinite;
+          animation: bottom .8s steps(4) infinite;
+}
+
+.top {
+  -webkit-animation: top .8s steps(4) infinite;
+     -moz-animation: top .8s steps(4) infinite;
+      -ms-animation: top .8s steps(4) infinite;
+       -o-animation: top .8s steps(4) infinite;
+          animation: top .8s steps(4) infinite;
+}
+
+.right {
+  -webkit-animation: right .8s steps(4) infinite;
+     -moz-animation: right .8s steps(4) infinite;
+      -ms-animation: right .8s steps(4) infinite;
+       -o-animation: right .8s steps(4) infinite;
+          animation: right .8s steps(4) infinite;
+}
+
+.left {
+  -webkit-animation: left .8s steps(4) infinite;
+     -moz-animation: left .8s steps(4) infinite;
+      -ms-animation: left .8s steps(4) infinite;
+       -o-animation: left .8s steps(4) infinite;
+          animation: left .8s steps(4) infinite;
+}
+
+@-webkit-keyframes bottom {
+  from { background-position: 0px 0px; }
+  to { background-position: -224px 0px; }
+}
+
+@-moz-keyframes bottom {
+  from { background-position: 0px 0px; }
+  to { background-position: -224px 0px; }
+}
+
+@-ms-keyframes bottom {
+  from { background-position: 0px 0px; }
+  to { background-position: -224px 0px; }
+}
+
+@-o-keyframes bottom {
+  from { background-position: 0px 0px; }
+  to { background-position: -224px 0px; }
+}
+
+@keyframes bottom {
+  from { background-position: 0px 0px; }
+  to { background-position: -224px 0px; }
+}
+
+@-webkit-keyframes right {
+  from { background-position: 0px -68px; }
+  to { background-position: -224px -68px; }
+}
+
+@-moz-keyframes right {
+  from { background-position: 0px -68px; }
+  to { background-position: -224px -68px; }
+}
+
+@-ms-keyframes right {
+  from { background-position: 0px -68px; }
+  to { background-position: -224px -68px; }
+}
+
+@-o-keyframes right {
+  from { background-position: 0px -68px; }
+  to { background-position: -224px -68px; }
+}
+
+@keyframes right {
+  from { background-position: 0px -68px; }
+  to { background-position: -224px -68px; }
+}
+
+@-webkit-keyframes left {
+  from { background-position: 0px -144px; }
+  to { background-position: -224px -144px; }
+}
+
+@-moz-keyframes left {
+  from { background-position: 0px -144px; }
+  to { background-position: -224px -144px; }
+}
+
+@-ms-keyframes left {
+  from { background-position: 0px -144px; }
+  to { background-position: -224px -144px; }
+}
+
+@-o-keyframes left {
+  from { background-position: 0px -144px; }
+  to { background-position: -224px -144px; }
+}
+
+@keyframes left {
+  from { background-position: 0px -144px; }
+  to { background-position: -224px -144px; }
+}
+
+@-webkit-keyframes top {
+  from { background-position: 0px -220px; }
+  to { background-position: -224px -220px; }
+}
+
+@-moz-keyframes top {
+  from { background-position: 0px -220px; }
+  to { background-position: -224px -220px; }
+}
+
+@-ms-keyframes top {
+  from { background-position: 0px -220px; }
+  to { background-position: -224px -220px; }
+}
+
+@-o-keyframes top {
+  from { background-position: 0px -220px; }
+  to { background-position: -224px -220px; }
+}
+
+@keyframes top {
+  from { background-position: 0px -220px; }
+  to { background-position: -224px -220px; }
+}

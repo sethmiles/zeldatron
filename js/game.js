@@ -30,11 +30,36 @@ Game.prototype = {
   },
 
   move: function(dir) {
+    walk(dir);
     var httpReq = new XMLHttpRequest();
     httpReq.onload = this.reqListener();
     httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/move', false);
     httpReq.send(dir);
   },
+
+  walk: function(dir) {
+    $('.player').addClass('walk');
+    var walkTime = 600;
+    switch(dir) {
+      case 'l':
+        $('.player').addClass('left');
+        setTimeout(function() { $player.removeClass('left'); }, walkTime);
+        break;
+      case 't':
+        $('.player').addClass('top');
+        setTimeout(function() { $player.removeClass('top'); }, walkTime);
+        break;
+      case 'r':
+        $('.player').addClass('right');
+        setTimeout(function() { $player.removeClass('right'); }, walkTime);
+        break;
+      case 'b':
+        $('.player').addClass('bottom');
+        setTimeout(function() { $player.removeClass('bottom'); }, walkTime);
+        break;
+      
+    }
+  }
 
   reset: function(id) {
     var httpReq = new XMLHttpRequest();

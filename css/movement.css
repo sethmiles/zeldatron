@@ -1,7 +1,13 @@
+.stand {
+  width: 56px;
+  height: 73px;
+  background: url('../img/standingSprite.png');
+}
+
 .walk {
   width: 56px;
   height: 73px;
-  background: url('../img/sprites.png');
+  background: url('../img/walkingSprite.png');
 }
 
 .bottom {

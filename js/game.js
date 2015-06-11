@@ -61,8 +61,9 @@ Game.prototype = {
   },
 
   walk: function(dir) {
+    var walkTime = 800;
     $('.player').addClass('walk');
-    var walkTime = 600;
+    setTimeout(function() { $player.removeClass('walk'); }, walkTime);
     switch(dir) {
       case 'l':
         $('.player').addClass('left');

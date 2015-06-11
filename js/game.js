@@ -55,6 +55,7 @@ Game.prototype = {
   },
 
   move: function(dir) {
+    walk(dir);
     var httpReq = new XMLHttpRequest();
     httpReq.onload = this.reqListener;
     httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/move');
@@ -63,6 +64,31 @@ Game.prototype = {
 
   ping: function() {
     this.makeCorsRequest('http://craigdh.bld.corp.google.com:8080/ping');
+  },
+
+  walk: function(dir) {
+    var walkTime = 800;
+    $('.player').addClass('walk');
+    setTimeout(function() { $player.removeClass('walk'); }, walkTime);
+    switch(dir) {
+      case 'l':
+        $('.player').addClass('left');
+        setTimeout(function() { $player.removeClass('left'); }, walkTime);
+        break;
+      case 't':
+        $('.player').addClass('top');
+        setTimeout(function() { $player.removeClass('top'); }, walkTime);
+        break;
+      case 'r':
+        $('.player').addClass('right');
+        setTimeout(function() { $player.removeClass('right'); }, walkTime);
+        break;
+      case 'b':
+        $('.player').addClass('bottom');
+        setTimeout(function() { $player.removeClass('bottom'); }, walkTime);
+        break;
+      
+    }
   },
 
   reset: function() {

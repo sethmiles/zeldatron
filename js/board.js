@@ -58,7 +58,7 @@ Board.prototype = {
   },
 
   createCharacters: function() {
-    
+    var that = this;
 
     this.characters = this.characterContainer.selectAll('div')
         .data(this.data.Objects, function(d) {
@@ -69,10 +69,14 @@ Board.prototype = {
       .attr('class', function(d) {
         return 'character ' + d.Type;
       })
-      .style('left', 0)
-      .style('right', 0)
-      .style('width', this.squareWidth)
-      .style('height', this.squareHeight);
+      .style('left', function(d) {
+        return that.scales.x(that.getRandomInt(0, that.data.Height));
+      })
+      .style('right', function(d) {
+        return that.scales.y(that.getRandomInt(0, that.data.Height));
+      })
+      .style('width', 0)
+      .style('height', 0);
 
       this.updateCharacters();
   },

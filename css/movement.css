@@ -1,12 +1,12 @@
 .player {
   width: 56px;
-  height: 73px;
+  height: 72px;
   background: url('../img/standingSprite.png');
 }
 
 .walk {
   width: 56px;
-  height: 73px;
+  height: 72px;
   background: url('../img/walkingSprite.png');
 }
 

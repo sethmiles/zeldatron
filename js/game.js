@@ -83,7 +83,7 @@ Game.prototype = {
         break;
       
     }
-  }
+  },
 
   reset: function() {
     var httpReq = new XMLHttpRequest();

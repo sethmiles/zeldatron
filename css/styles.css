@@ -132,5 +132,28 @@ svg .tile {
 }
 
 #board {
+  position: relative;
   margin: 0 auto;
 }
+
+
+
+.character-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+
+.character {
+  position: absolute;
+}
+
+.m {
+  background-color: red;
+}
+
+.p {
+  background-color: blue;
+}
+

@@ -59,7 +59,7 @@ App.prototype = {
     } else {
       this.utils.createRealtimeFile('Zeldatron Game', function(file) {
         if (file.id) {
-          this.docId = id;
+          that.docId = id;
           history.pushState({}, '', '?id=' + file.id);
           that.utils.load(file.id, that.onFileLoaded, that.initializeFile);
         }

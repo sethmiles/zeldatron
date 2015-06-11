@@ -1,5 +1,6 @@
 
-var Board = function() {
+var Board = function(app) {
+  this.app = app;
   this.init();
 }
 
@@ -10,7 +11,7 @@ Board.prototype = {
   margins: [20, 20, 20, 20],
 
   data: {
-    "width":15,
+    "width":5,
     "height":15,
     "objects":[{
       "pos":{
@@ -23,9 +24,15 @@ Board.prototype = {
 
   init: function() {
     this.createEl();
+    this.setBindings();
+  },
+
+  setBindings: function() {
+    this.onWindowSizeChange = this.onWindowSizeChange.bind(this);
   },
 
   build: function() {
+    window.addEventListener('resize', this.onWindowSizeChange)
     this.setScales();
 
     this.svgContainer = d3.select(this.el)
@@ -38,6 +45,18 @@ Board.prototype = {
 
     this.createCells();
     this.updateCells();
+  },
+
+  updateContainers: function() {
+    this.svgContainer[0][0].setAttribute('width', this.svgSize.width);
+    this.svgContainer[0][0].setAttribute('height', this.svgSize.height);
+    this.el.setAttribute('style', 'width:' + (this.svgSize.width + this.margins[1] + this.margins[3]) + 'px;');
+  },
+
+  onWindowSizeChange: function() {
+    this.setScales();
+    this.updateCells();
+    this.updateContainers();
   },
 
   setScales: function() {
@@ -70,9 +89,6 @@ Board.prototype = {
       x: d3.scale.linear().domain([0, this.data.width]).range([0, this.svgSize.width]),
       y: d3.scale.linear().domain([0, this.data.height]).range([0, this.svgSize.height])
     }
-
-
-
   },
 
   createCells: function() {
@@ -117,16 +133,6 @@ Board.prototype = {
       }
     }
     return data;
-  },
-
-  setDoc: function(doc) {
-    if (this.doc) {
-
-    }
-
-    this.doc = doc;
-    this.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType)
-
   },
 
   createEl: function() {

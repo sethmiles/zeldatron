@@ -1,9 +1,5 @@
 /* elements */
 
-.tile {
-  background-color: #c9a58c;
-}
-
 .rock {
   background-size: contain;
   background-image: url('../img/rock.png');

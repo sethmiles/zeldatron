@@ -19,6 +19,7 @@
 }
 
 .walk {
+  background-size: contain;
   background: url('../img/walkingSprite.png');
 }
 
@@ -56,100 +57,100 @@
 
 @-webkit-keyframes bottom {
   from { background-position: 0px 0px; }
-  to { background-position: -224px 0px; }
+  to { background-position: -128px 0px; }
 }
 
 @-moz-keyframes bottom {
   from { background-position: 0px 0px; }
-  to { background-position: -224px 0px; }
+  to { background-position: -128px 0px; }
 }
 
 @-ms-keyframes bottom {
   from { background-position: 0px 0px; }
-  to { background-position: -224px 0px; }
+  to { background-position: -128px 0px; }
 }
 
 @-o-keyframes bottom {
   from { background-position: 0px 0px; }
-  to { background-position: -224px 0px; }
+  to { background-position: -128px 0px; }
 }
 
 @keyframes bottom {
   from { background-position: 0px 0px; }
-  to { background-position: -224px 0px; }
+  to { background-position: -128px 0px; }
 }
 
 @-webkit-keyframes right {
-  from { background-position: 0px -68px; }
-  to { background-position: -224px -68px; }
+  from { background-position: 0px -32px; }
+  to { background-position: -128px -32px; }
 }
 
 @-moz-keyframes right {
-  from { background-position: 0px -68px; }
-  to { background-position: -224px -68px; }
+  from { background-position: 0px -32px; }
+  to { background-position: -128px -32px; }w
 }
 
 @-ms-keyframes right {
-  from { background-position: 0px -68px; }
-  to { background-position: -224px -68px; }
+  from { background-position: 0px -32px; }
+  to { background-position: -128px -32px; }
 }
 
 @-o-keyframes right {
-  from { background-position: 0px -68px; }
-  to { background-position: -224px -68px; }
+  from { background-position: 0px -32px; }
+  to { background-position: -128px -32px; }
 }
 
 @keyframes right {
-  from { background-position: 0px -68px; }
-  to { background-position: -224px -68px; }
+  from { background-position: 0px -32px; }
+  to { background-position: -128px -32px; }
 }
 
 @-webkit-keyframes left {
-  from { background-position: 0px -144px; }
-  to { background-position: -224px -144px; }
+  from { background-position: 0px -64px; }
+  to { background-position: -128px -64px; }
 }
 
 @-moz-keyframes left {
-  from { background-position: 0px -144px; }
-  to { background-position: -224px -144px; }
+  from { background-position: 0px -64px; }
+  to { background-position: -128px -64px; }
 }
 
 @-ms-keyframes left {
-  from { background-position: 0px -144px; }
-  to { background-position: -224px -144px; }
+  from { background-position: 0px -64px; }
+  to { background-position: -128px -64px; }
 }
 
 @-o-keyframes left {
-  from { background-position: 0px -144px; }
-  to { background-position: -224px -144px; }
+  from { background-position: 0px -64px; }
+  to { background-position: -128px -64px; }
 }
 
 @keyframes left {
-  from { background-position: 0px -144px; }
-  to { background-position: -224px -144px; }
+  from { background-position: 0px -64px; }
+  to { background-position: -128px -64px; }
 }
 
 @-webkit-keyframes top {
-  from { background-position: 0px -220px; }
-  to { background-position: -224px -220px; }
+  from { background-position: 0px -96x; }
+  to { background-position: -128px -96px; }
 }
 
 @-moz-keyframes top {
-  from { background-position: 0px -220px; }
-  to { background-position: -224px -220px; }
+  from { background-position: 0px -96px; }
+  to { background-position: -128px -96px; }
 }
 
 @-ms-keyframes top {
-  from { background-position: 0px -220px; }
-  to { background-position: -224px -220px; }
+  from { background-position: 0px -96px; }
+  to { background-position: -128px -96px; }
 }
 
 @-o-keyframes top {
-  from { background-position: 0px -220px; }
-  to { background-position: -224px -220px; }
+  from { background-position: 0px -96px; }
+  to { background-position: -128px -96px; }
 }
 
 @keyframes top {
-  from { background-position: 0px -220px; }
-  to { background-position: -224px -220px; }
+  from { background-position: 0px -96px; }
+  to { background-position: -128px -96px; }
 }

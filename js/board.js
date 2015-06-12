@@ -198,13 +198,14 @@ Board.prototype = {
   },
 
   defaultBoard: {
+      "NewGame": true,
       "Width": 15,
       "Height": 15,
       "Objects": [
           {
               "Pos": {
-                  "X": 0,
-                  "Y": 0
+                  "X": 10,
+                  "Y": 10
               },
               "Type": "p",
               "Id": 0

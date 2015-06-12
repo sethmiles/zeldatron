@@ -1,6 +1,5 @@
-var Game = function(app, board) {
+var Game = function(app) {
   this.app = app;
-  this.board = board;
   this.init();
 }
 
@@ -16,6 +15,8 @@ Game.prototype = {
     this.uniKeyDown = this.uniKeyDown.bind(this);
     this.move = this.move.bind(this);
     this.toggle = this.toggle.bind(this);
+    this.onResetResponse = this.onResetResponse.bind(this);
+    this.onEndResponse = this.onEndResponse.bind(this);
   },
 
   uniKeyDown: function(e) {
@@ -58,34 +59,49 @@ Game.prototype = {
     } else {
       this.startNewGame();
     }
-    this.reset();
   },
 
   startDemo: function() {
     this.app.el.querySelector('#toggleButton').textContent = "Start";
     this.gameInProgress = false;
-    this.board.buildDemo();
+    this.app.board.buildDemo();
   },
 
   startExistingGame: function() {
     this.app.el.querySelector('#toggleButton').textContent = "End";
-    this.board.buildExisting();
+    this.app.board.buildExisting();
     this.gameInProgress = true;
     window.addEventListener("keyup", this.uniKeyDown);
   },
 
   startNewGame: function() {
-    this.app.el.querySelector('#toggleButton').textContent = "End";
-    this.reset();
-    this.gameInProgress = true;
-    this.board.buildNew();
-    window.addEventListener("keyup", this.uniKeyDown);
+    var that = this;
+    this.app.el.querySelector('#toggleButton').textContent = "Starting...";
+    var httpReq = new XMLHttpRequest();
+    httpReq.onload = function() {
+      that.onResetResponse(httpReq);
+    }
+    httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/reset');
+    httpReq.send(JSON.stringify({
+      Token: gapi.auth.getToken().access_token,
+      DocId: this.app.docId
+    }));
   },
 
   endGame: function() {
-    this.app.el.querySelector('#toggleButton').textContent = "Start";
+    var that = this;
+    var httpReq = new XMLHttpRequest();
+    httpReq.onload = function() {
+      that.onEndResponse(httpReq);
+    }
+    httpReq.open('GET', 'http://craigdh.bld.corp.google.com:8080/end');
+    httpReq.send();
+  },
+
+  hasEnded: function() {
+    // Brix document notifying us of a game ending
     this.gameInProgress = false;
-    this.board.destroy();
+    this.app.el.querySelector('#toggleButton').textContent = "Start";
     window.removeEventListener("keyup", this.uniKeyDown);
   },
 
@@ -124,21 +140,19 @@ Game.prototype = {
     }
   },
 
-  reset: function() {
-    var httpReq = new XMLHttpRequest();
-    httpReq.onload = this.onResetResponse;
-    httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/reset');
-    httpReq.send(JSON.stringify({
-        Token: gapi.auth.getToken().access_token,
-        DocId: this.app.docId
-      }));
-  },
-
   onMoveResponse: function(xhr) {
-    this.board.setData(JSON.parse(xhr.responseText))
+    this.app.board.setData(JSON.parse(xhr.responseText))
   },
 
   onResetResponse: function(xhr) {
+    console.log(xhr.responseText);
+    this.gameInProgress = true;
+    this.app.board.buildNew();
+    window.addEventListener("keyup", this.uniKeyDown);
+    this.app.el.querySelector('#toggleButton').textContent = "End";
+  },
+
+  onEndResponse: function(xhr) {
     console.log(xhr.responseText);
   }
 }

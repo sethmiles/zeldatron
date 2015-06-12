@@ -37,7 +37,7 @@ App.prototype = {
 
     // Create new instance of Game
     this.board = new Board(this);
-    this.game = new Game(this, this.board);
+    this.game = new Game(this);
     
     this.el.querySelector('.game').appendChild(this.board.el);
     this.el.querySelector('#toggleButton').addEventListener('click', this.toggleGameState);

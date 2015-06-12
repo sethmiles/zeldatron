@@ -39,7 +39,7 @@ Board.prototype = {
     this.data = this.emptyData;
     this.updateAll();
     setTimeout(function(){
-      this.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onNewDocChange);
+      that.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, that.onNewDocChange);
     }, this.duration);
     
   },
@@ -83,6 +83,9 @@ Board.prototype = {
     if (data.Version > this.data.Version) {
       this.data = data;
       this.createCharacters();
+      if (data.GameState == 'dead') {
+        this.gameEnded();
+      }
       console.log('updating according to brix');
     } else {
       console.log('brix is out of data, ignoring event');
@@ -99,10 +102,18 @@ Board.prototype = {
     if (data.Version > this.data.Version) {
       this.data = data;
       this.createCharacters();
+      if (data.GameState == 'dead') {
+        this.gameEnded();
+      }
       console.log('applying immediate change');
     } else {
       console.log('brix is more updated than immediate change');
     }
+  },
+
+  gameEnded: function() {
+    this.app.game.hasEnded();
+    this.destroy();
   },
 
   createCharacters: function() {

@@ -87,7 +87,6 @@ Board.prototype = {
     this.hatchet.style.display = 'none';
     this.el.appendChild(this.hatchet);
 
-    this.healthBar = this.svgContainer.append('g');
     this.el.setAttribute('style', 'width:' + (this.svgSize.width + this.margins[1] + this.margins[3]) + 'px;');
     
     this.createCells();
@@ -104,6 +103,7 @@ Board.prototype = {
       } else {
         this.data = data;
         this.createCharacters();  
+        this.createHealthBar();
       }
       console.log('updating according to brix');
     } else {
@@ -115,13 +115,14 @@ Board.prototype = {
   updateAll: function() {
     this.createCharacters();
     this.createCells();
-    this.setHealth();
+    this.createHealthBar();
   },
 
   setData: function(data) {
     if (data.Version > this.data.Version) {
       this.data = data;
       this.createCharacters();
+      this.createHealthBar();
       if (data.GameState == 'dead') {
         this.gameEnded();
       }
@@ -257,32 +258,69 @@ Board.prototype = {
   createHealthBar: function() {
     var that = this;
 
-    this.hearts = this.healthBar.selectAll('heart').data([1, 1, 1, 1, 1]);
+    this.hearts = this.healthBar.selectAll('div')
+        .data(this.getHealth(), function(d) {
+            return d.id.toString();
+          });
+    
     this.hearts
         .enter()
       .append('div')
       .attr('class', function(d) {
-        if (d == 0) return 'empty';
-        else        return 'heart';
+        if (d.status == 0) {
+          return 'empty';
+        } else {
+          return 'heart';
+        }        
+      })
+      .style('width', that.squareWidth)
+      .style('height', that.squareHeight);
+
+    this.hearts
+      .attr('class', function(d) {
+        if (d.status == 0) {
+          return 'empty';
+        } else {
+          return 'heart';
+        }        
       })
       .style('width', that.squareWidth)
       .style('height', that.squareHeight);
   },
 
-  setHealth: function() {
-    var health = this.data.Health;
-    var heartData = [];
-    for (var i = 0; i < 5; i++) {
-      if (i <= health) heartData[i] = 1;
-      else             heartData[i] = 0;
-    }
-    this.hearts = this.healthBar.selectAll('heart').data(heartData);
-    this.hearts
-      .attr('class', function(d) {
-        if (d == 0) return 'empty';
-        else        return 'heart';
+  getHealth: function() {
+    var data = [];
+    for(var i = 0; i < this.data.Health; i++){
+      data.push({
+        status: 1,
+        id: function(index){
+          return index;
+        }(i)
       });
+    }
+    while(data.length < 5){
+      data.push({
+        status: 0,
+        id: data.length
+      });
+    }
+    return data;
   },
+
+  // setHealth: function() {
+  //   var health = this.data.Health;
+  //   var heartData = [];
+  //   for (var i = 0; i < 5; i++) {
+  //     if (i <= health) heartData[i] = 1;
+  //     else             heartData[i] = 0;
+  //   }
+  //   this.hearts = this.healthBar.selectAll('div').data(heartData);
+  //   this.hearts
+  //     .attr('class', function(d) {
+  //       if (d == 0) return 'empty';
+  //       else        return 'heart';
+  //     });
+  // },
 
   getCharacterClass: function(serverType) {
     switch(serverType) {

@@ -20,7 +20,7 @@ App.prototype = {
               '<div class="game">' +
                 '<div class="title">Zeldatron</div>' +
                 '<div class="buttons">' +
-                  '<div id="startButton" class="game-btn">Start</div>' +
+                  '<div id="toggleButton" class="game-btn"></div>' +
                 '</div>' +
               '</div>' +
             '</div>',
@@ -40,7 +40,7 @@ App.prototype = {
     this.game = new Game(this, this.board);
     
     this.el.querySelector('.game').appendChild(this.board.el);
-    this.el.querySelector('#startButton').addEventListener('click', this.toggleGameState);
+    this.el.querySelector('#toggleButton').addEventListener('click', this.toggleGameState);
   },
 
   setBindings: function() {
@@ -73,16 +73,17 @@ App.prototype = {
     var that = this;
     this.doc = doc;
     this.el.classList.remove('unauthenticated');
-    if(doc.getModel().getRoot().get('gameState')){
+    if(doc.getModel().getRoot().get('boardState').GameState == 'running'){
       // A game is in progress
         // This is used for effect and to ensure that everything is already attached to the DOM
+      console.log('game is in progress, loading it');
       setTimeout(function(){
-        that.board.buildExisting();
+        that.game.startExistingGame();
       }, 500);
     } else {
       // This game hasn't started yet
       setTimeout(function(){
-        that.board.buildDemo();
+        that.game.startDemo();
       }, 500);
     }
   },

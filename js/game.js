@@ -56,21 +56,36 @@ Game.prototype = {
     if(this.gameInProgress) {
       this.endGame();
     } else {
-      this.startGame();
+      this.startNewGame();
     }
     this.reset();
   },
 
-  startGame: function() {
+  startDemo: function() {
+    this.app.el.querySelector('#toggleButton').textContent = "Start";
+    this.gameInProgress = false;
+    this.board.buildDemo();
+  },
+
+  startExistingGame: function() {
+    this.app.el.querySelector('#toggleButton').textContent = "End";
+    this.board.buildExisting();
+    this.gameInProgress = true;
+    window.addEventListener("keyup", this.uniKeyDown);
+  },
+
+  startNewGame: function() {
+    this.app.el.querySelector('#toggleButton').textContent = "End";
     this.reset();
     this.gameInProgress = true;
-    this.board.reset();
+    this.board.buildNew();
     window.addEventListener("keyup", this.uniKeyDown);
   },
 
   endGame: function() {
+    this.app.el.querySelector('#toggleButton').textContent = "Start";
     this.gameInProgress = false;
-    this.game.destroy();
+    this.board.destroy();
     window.removeEventListener("keyup", this.uniKeyDown);
   },
 

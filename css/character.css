@@ -1,6 +1,6 @@
 .monster {
-  background-image: url('../img/enemy.png');
   background-size: contain;
+  background-image: url('../img/monster.png');
 }
 
 .rock {
@@ -17,8 +17,6 @@
 }
 
 .walk {
-  width: 56px;
-  height: 72px;
   background: url('../img/walkingSprite.png');
 }
 

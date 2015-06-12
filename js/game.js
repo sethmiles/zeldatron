@@ -9,22 +9,22 @@ Game.prototype = {
 
   init: function() {
     this.setBindings();
-    window.addEventListener("keydown", this.uniKeyDown, false);
+    window.addEventListener("keyup", this.uniKeyDown, false);
   },
 
   uniKeyDown: function(e) {
     switch (e.keyCode) {
-      case 37:
-        this.move('l');
+      case 87: // w
+        this.move('w');
         break;
-      case 38:
-        this.move('t');
+      case 65: // a
+        this.move('a');
         break;
-      case 39:
-        this.move('r');
+      case 83: // s
+        this.move('s');
         break;
-      case 40:
-        this.move('b');
+      case 68: // d
+        this.move('d');
         break;
     }
   },
@@ -50,16 +50,16 @@ Game.prototype = {
   },
 
   endGame: function() {
-    this.end();
+    // this.end();
     this.gameInProgress = false;
   },
 
   move: function(dir) {
-    walk(dir);
+    // this.walk(dir);
     var httpReq = new XMLHttpRequest();
     httpReq.onload = this.reqListener;
     httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/move');
-    httpReq.send(dir);
+    httpReq.send({ "Dir": dir });
   },
 
   ping: function() {
@@ -86,8 +86,7 @@ Game.prototype = {
       case 'b':
         $('.player').addClass('bottom');
         setTimeout(function() { $player.removeClass('bottom'); }, walkTime);
-        break;
-      
+        break; 
     }
   },
 

@@ -23,7 +23,7 @@ Board.prototype = {
   },
 
   build: function() {
-    // this.data = this.app.doc.getModel().getRoot().get('boardState');
+    this.data = this.app.doc.getModel().getRoot().get('boardState');
     this.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onDocChange);
     window.addEventListener('resize', this.onWindowSizeChange)
     this.setScales();
@@ -54,44 +54,50 @@ Board.prototype = {
   },
 
   updateBoard: function() {
-    this.updateCharacters();
+    this.createCharacters();
   },
 
   createCharacters: function() {
     var that = this;
 
     this.characters = this.characterContainer.selectAll('div')
-        .data(this.data.Objects, function(d) {
-          return d.Id;
-        })
-      .enter()
-      .append('div')
-      .attr('class', function(d) {
-        return 'character ' + d.Type;
+      .data(this.data.Objects, function(d) {
+        return d.Id.toString();
       })
-      .style('left', function(d) {
-        return that.scales.x(that.getRandomInt(0, that.data.Height));
-      })
-      .style('right', function(d) {
-        return that.scales.y(that.getRandomInt(0, that.data.Height));
-      })
-      .style('width', 0)
-      .style('height', 0);
 
-      this.updateCharacters();
+      this.characters
+          .enter()
+        .append('div')
+        .attr('class', function(d) {
+          return 'character ' + that.getCharacterClass(d.Type);
+        })
+        .style('left', function(d) {
+          return that.scales.x(that.getRandomInt(0, that.data.Height));
+        })
+        .style('right', function(d) {
+          return that.scales.y(that.getRandomInt(0, that.data.Height));
+        })
+        .style('width', 0)
+        .style('height', 0);
+
+      this.characters.transition().duration(500)
+        .style('left', function(d) {
+          return that.scales.x(d.Pos.X);
+        })
+        .style('top', function(d) {
+          return that.scales.y(d.Pos.Y);
+        })
+        .style('width', this.squareWidth)
+        .style('height', this.squareHeight);
   },
 
-  updateCharacters: function() {
-    var that = this;
-    this.characters.transition().duration(this.duration)
-      .style('left', function(d) {
-        return that.scales.x(d.Pos.X);
-      })
-      .style('top', function(d) {
-        return that.scales.y(d.Pos.Y);
-      })
-      .style('width', this.squareWidth)
-      .style('height', this.squareHeight);
+  getCharacterClass: function(serverType) {
+    switch(serverType) {
+      case 'p':
+        return 'player';
+      case 'm':
+        return 'monster';
+    }
   },
 
   updateContainers: function() {
@@ -106,7 +112,7 @@ Board.prototype = {
     this.setScales();
     this.updateCells();
     this.updateContainers();
-    this.updateCharacters();
+    this.createCharacters();
   },
 
   setScales: function() {
@@ -191,60 +197,60 @@ Board.prototype = {
     this.el = div.children[0];
   },
 
-  data: {
-      "Width": 15,
-      "Height": 15,
-      "Objects": [
-          {
-              "Pos": {
-                  "X": 0,
-                  "Y": 0
-              },
-              "Type": "p",
-              "Id": 0
-          },
-          {
-              "Pos": {
-                  "X": 6,
-                  "Y": 13
-              },
-              "Type": "m",
-              "Id": 1
-          },
-          {
-              "Pos": {
-                  "X": 7,
-                  "Y": 14
-              },
-              "Type": "m",
-              "Id": 2
-          },
-          {
-              "Pos": {
-                  "X": 2,
-                  "Y": 8
-              },
-              "Type": "m",
-              "Id": 3
-          },
-          {
-              "Pos": {
-                  "X": 10,
-                  "Y": 8
-              },
-              "Type": "m",
-              "Id": 4
-          },
-          {
-              "Pos": {
-                  "X": 6,
-                  "Y": 4
-              },
-              "Type": "m",
-              "Id": 5
-          }
-      ]
-  }
+  // data: {
+  //     "Width": 15,
+  //     "Height": 15,
+  //     "Objects": [
+  //         {
+  //             "Pos": {
+  //                 "X": 0,
+  //                 "Y": 0
+  //             },
+  //             "Type": "p",
+  //             "Id": 0
+  //         },
+  //         {
+  //             "Pos": {
+  //                 "X": 6,
+  //                 "Y": 13
+  //             },
+  //             "Type": "m",
+  //             "Id": 1
+  //         },
+  //         {
+  //             "Pos": {
+  //                 "X": 7,
+  //                 "Y": 14
+  //             },
+  //             "Type": "m",
+  //             "Id": 2
+  //         },
+  //         {
+  //             "Pos": {
+  //                 "X": 2,
+  //                 "Y": 8
+  //             },
+  //             "Type": "m",
+  //             "Id": 3
+  //         },
+  //         {
+  //             "Pos": {
+  //                 "X": 10,
+  //                 "Y": 8
+  //             },
+  //             "Type": "m",
+  //             "Id": 4
+  //         },
+  //         {
+  //             "Pos": {
+  //                 "X": 6,
+  //                 "Y": 4
+  //             },
+  //             "Type": "m",
+  //             "Id": 5
+  //         }
+  //     ]
+  // }
 }
 
 

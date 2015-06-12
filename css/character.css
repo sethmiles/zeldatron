@@ -1,6 +1,7 @@
-.monster {
-  background-size: contain;
-  background-image: url('../img/monster.png');
+/* elements */
+
+.tile {
+  background-color: #c9a58c;
 }
 
 .rock {
@@ -13,6 +14,21 @@
   background-image: url('../img/tree.png');
 }
 
+.heart {
+  background-image: url('../img/heart.png');
+}
+
+.heart .empty {
+  background-image: url('../img/emptyHeart.png');
+}
+
+/* characters */
+
+.monster {
+  background-size: contain;
+  background-image: url('../img/monster.png');
+}
+
 .player {
   background-size: contain;
   background-image: url('../img/standingSprite.png');
@@ -22,6 +38,8 @@
   background-size: contain;
   background: url('../img/walkingSprite.png');
 }
+
+/* walking animations */
 
 .bottom {
   -webkit-animation: bottom .8s steps(4) infinite;

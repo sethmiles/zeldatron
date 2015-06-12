@@ -9,6 +9,7 @@ Game.prototype = {
 
   init: function() {
     this.setBindings();
+    window.addEventListener("keyup", this.uniKeyDown);
   },
 
   setBindings: function() {
@@ -76,7 +77,7 @@ Game.prototype = {
     this.app.el.querySelector('#toggleButton').textContent = "End";
     this.app.board.buildExisting();
     this.gameInProgress = true;
-    window.addEventListener("keyup", this.uniKeyDown);
+    // window.addEventListener("keyup", this.uniKeyDown);
   },
 
   startNewGame: function() {
@@ -108,6 +109,7 @@ Game.prototype = {
     console.log('brix acked an edned game');
     this.gameInProgress = false;
     this.app.el.querySelector('#toggleButton').textContent = "Start";
+    this.app.board.gameOver();
     window.removeEventListener("keyup", this.uniKeyDown);
   },
 

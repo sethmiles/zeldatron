@@ -125,17 +125,17 @@ svg {
   margin: 0 auto;
 }
 
-svg .tile {
-  stroke-width: 1px;
-  stroke: #27ae60;
-  fill: #fff;
-}
 
 #board {
   position: relative;
   margin: 0 auto;
 }
 
+.tile {
+  position: absolute;
+  background-size: contain;
+  background-image: url('../img/grass.png');
+}
 
 
 .character-container {
@@ -149,6 +149,21 @@ svg .tile {
 }
 
 .healthbar {
+  position: absolute;
+}
+
+.game-over {
+    font-family: 'Press Start 2P', cursive;
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+    position: absolute;
+    top: 200px;
+    display: none;
+    z-index: 100;
+}
+
+.board-container {
   position: absolute;
 }
 

@@ -6,7 +6,15 @@ var Board = function(app) {
 
 Board.prototype = {
 
-  elString: '<div id="board"></div>',
+  elString: '<div id="board">' +
+              '<div class="game-over">Game Over!</div>' +
+              '<audio id="intro-music">' +
+                 '<source src="music/legends-intro.mp3" /> ' +
+              '</audio>' +
+              '<audio id="game-music">' +
+                 '<source src="music/legends-game.mp3" /> ' +
+              '</audio>' +
+            '</div>',
 
   margins: [20, 20, 20, 20],
 
@@ -26,15 +34,21 @@ Board.prototype = {
   buildExisting: function() {
     this.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onDocChange);
     this.data = this.app.doc.getModel().getRoot().get('boardState');
+    this.el.querySelector('#game-music').play();
     this.build();
   },
 
   buildDemo: function() {
+    this.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onDocChange);
+    this.el.querySelector('#intro-music').play();
     this.data = this.defaultBoard;
     this.build();
   },
 
   buildNew: function() {
+    this.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onDocChange);
+    this.el.querySelector('#intro-music').pause();
+    this.el.querySelector('#game-music').play();
     var that = this;
     this.data = this.emptyData;
     this.updateAll();
@@ -68,12 +82,13 @@ Board.prototype = {
       .style('top', this.margins[0]);
 
     this.svgContainer = d3.select(this.el)
-        .append('svg')
-      .attr('width', this.svgSize.width)
-      .attr('height', this.svgSize.height)
+        .append('div')
+      .attr('class', 'board-container')
+      .style('width', this.svgSize.width)
+      .style('height', this.svgSize.height)
       .style('margin', this.margins.join(' '));
 
-    this.cellsContainer = this.svgContainer.append('g');
+    // this.cellsContainer = this.svgContainer.append('div');
 
     this.characterContainer = d3.select(this.el).append('div')
       .attr('class', 'character-container')
@@ -95,7 +110,7 @@ Board.prototype = {
     this.createHealthBar();
   },
 
-  onDocChange: function() {
+  onDocChange: function(evt) {
     var data = this.app.doc.getModel().getRoot().get('boardState');
     if (data.Version > this.data.Version) {
       if (data.GameState == 'dead') {
@@ -116,6 +131,10 @@ Board.prototype = {
     this.createCharacters();
     this.createCells();
     this.createHealthBar();
+  },
+
+  gameOver: function() {
+    this.el.querySelector('.game-over').style.display = 'block';
   },
 
   setData: function(data) {
@@ -193,65 +212,40 @@ Board.prototype = {
   createCells: function() {
     var that = this;
     // Enter
-    this.cells = this.cellsContainer.selectAll('rect')
+    this.cells = this.svgContainer.selectAll('div')
         .data(this.getCellData());
 
     this.cells
         .enter()
-      .append('rect')
+      .append('div')
         .attr('class', 'tile')
-        .attr('x', function(d) {
+        .style('left', function(d) {
           return that.scales.x(that.getRandomInt(0, that.data.Width));
         })
-        .attr('y', function(d) {
+        .style('top', function(d) {
           return that.scales.y(that.getRandomInt(0, that.data.Height));
         })
-        .attr('width', 0)
-        .attr('height', 0)
-        // .each(function(d) {
-        //   var pattern = document.createElement('pattern');
-        //   pattern.setAttribute('patterUnits', 'userSpaceOnUse');
-        //   pattern.setAttribute('width', that.squareWidth);
-        //   pattern.setAttribute('height', that.squareHeight);
-
-
-        //   var image = document.createElement('image');
-        //   image.setAttribute("xlink:href", "img/grass.png");
-        //   image.setAttribute('width', that.squareWidth);
-        //   image.setAttribute('height', that.squareHeight);
-
-        //   pattern.appendChild(image);
-        //   this.appendChild(pattern);
-        // });
-
-    // this.cells
-    //   .append('pattern')
-    //     .attr('patternUnits', 'userSpaceOnUse')
-    //     .attr('width', 0)
-    //     .attr('height', 0)
-    //   .append("image")
-    //     .attr("xlink:href", "img/grass.png")
-    //     .attr('width', 0)
-    //     .attr('height', 0);
+        .style('width', 0)
+        .style('height', 0)
 
     // Update
     this.cells.transition().duration(this.duration)
-      .attr('x', function (d) { return that.scales.x(d.x); })
-      .attr('y', function (d) { return that.scales.y(d.y); })
-      .attr('width', that.squareWidth)
-      .attr('height', that.squareHeight);
+      .style('left', function (d) { return that.scales.x(d.x); })
+      .style('top', function (d) { return that.scales.y(d.y); })
+      .style('width', that.squareWidth)
+      .style('height', that.squareHeight);
 
     // Exit
     this.cells
         .exit().transition().duration(this.duration)
-      .attr('x', function(d) {
+      .style('left', function(d) {
         return that.scales.x(that.getRandomInt(0, that.data.Width));
       })
-      .attr('y', function(d) {
+      .style('top', function(d) {
         return that.scales.y(that.getRandomInt(0, that.data.Height));
       })
-      .attr('width', 0)
-      .attr('height', 0)
+      .style('width', 0)
+      .style('height', 0)
       .remove();
   },
 

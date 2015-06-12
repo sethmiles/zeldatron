@@ -105,7 +105,7 @@ Board.prototype = {
     this.el.setAttribute('style', 'width:' + (this.svgSize.width + this.margins[1] + this.margins[3]) + 'px;');
     
     this.createCells();
-    this.createCharacters();
+    this.createCharacters(2000);
 
     this.createHealthBar();
   },
@@ -156,7 +156,7 @@ Board.prototype = {
     this.destroy();
   },
 
-  createCharacters: function() {
+  createCharacters: function(duration) {
     var that = this;
 
     this.characters = this.characterContainer.selectAll('div')
@@ -168,7 +168,7 @@ Board.prototype = {
           .enter()
         .append('div')
         .style('left', function(d) {
-          return that.scales.x(that.getRandomInt(0, that.data.Height));
+          return that.scales.x(that.getRandomInt(0, that.data.Width));
         })
         .style('right', function(d) {
           return that.scales.y(that.getRandomInt(0, that.data.Height));
@@ -176,7 +176,7 @@ Board.prototype = {
         .style('width', 0)
         .style('height', 0);
 
-      this.characters.transition().duration(75)
+      this.characters.transition().duration(duration ? duration : 75)
         .attr('class', function(d) {
           var dir = function() {
             if(that.data.PlayerDir.X != 0) {
@@ -197,9 +197,9 @@ Board.prototype = {
         .style('height', this.squareHeight);
 
       this.characters
-          .exit().transition().duration(this.duration)
+          .exit().transition().duration(1000)
         .style('left', function(d) {
-          return that.scales.x(that.getRandomInt(0, that.data.Height));
+          return that.scales.x(that.getRandomInt(0, that.data.Width));
         })
         .style('right', function(d) {
           return that.scales.y(that.getRandomInt(0, that.data.Height));
@@ -239,10 +239,10 @@ Board.prototype = {
     this.cells
         .exit().transition().duration(this.duration)
       .style('left', function(d) {
-        return that.scales.x(that.getRandomInt(0, that.data.Width));
+        return that.scales.x(that.getRandomInt(0, 15));
       })
       .style('top', function(d) {
-        return that.scales.y(that.getRandomInt(0, that.data.Height));
+        return that.scales.y(that.getRandomInt(0, 15));
       })
       .style('width', 0)
       .style('height', 0)
@@ -450,6 +450,7 @@ Board.prototype = {
         "X":1,
         "Y":0
       },
+      "Health": 5,
       "Objects": [
           {
               "Pos": {
@@ -480,7 +481,7 @@ Board.prototype = {
                   "X": 2,
                   "Y": 8
               },
-              "Type": "m",
+              "Type": "r",
               "Id": 3
           },
           {
@@ -488,7 +489,7 @@ Board.prototype = {
                   "X": 10,
                   "Y": 8
               },
-              "Type": "m",
+              "Type": "t",
               "Id": 4
           },
           {
@@ -496,7 +497,7 @@ Board.prototype = {
                   "X": 6,
                   "Y": 4
               },
-              "Type": "m",
+              "Type": "b",
               "Id": 5
           }
       ]

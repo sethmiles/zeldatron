@@ -8,7 +8,7 @@ body {
 
 #zeldatron {
   transition: all 1s;
-  background-color: #27ae60;
+  background-color: #8D6E63;
   font-family: 'Raleway', sans-serif;
   position: absolute;
   top: 0;
@@ -124,7 +124,6 @@ body {
 svg {
   margin: 0 auto;
 }
-
 
 #board {
   position: relative;

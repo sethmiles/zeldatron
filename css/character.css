@@ -3,16 +3,6 @@
   background-image: url('../img/monster.png');
 }
 
-.rock {
-  background-size: contain;
-  background-image: url('../img/rock.png');
-}
-
-.tree {
-  background-size: contain;
-  background-image: url('../img/tree.png');
-}
-
 .player {
   background-size: contain;
   background-image: url('../img/standingSprite.png');

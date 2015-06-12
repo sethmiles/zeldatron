@@ -28,6 +28,11 @@
   background-image: url('../img/monster.png');
 }
 
+.boss {
+  background-size: contain;
+  background-image: url('../img/boss.png');
+}
+
 .hatchet {
   background-size: contain;
   background: url('../img/hatchet.png');

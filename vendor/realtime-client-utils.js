@@ -134,6 +134,16 @@ utils.RealtimeUtils.prototype = {
         }
       };
       window.gapi.client.drive.files.insert(insertHash).execute(callback);
+      // function(file){
+      //   var body = {
+      //     'type': 'anyone',
+      //     'role': 'writer'
+      //   };
+      //   gapi.client.drive.permissions.insert({
+      //     'fileId': file.id,
+      //     'resource': body
+      //   }).execute(callback);
+      // });
     });
   },
 

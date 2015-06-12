@@ -58,6 +58,7 @@ Board.prototype = {
   build: function() {
     window.addEventListener('resize', this.onWindowSizeChange);
     this.setScales();
+
     this.svgContainer = d3.select(this.el)
         .append('svg')
       .attr('width', this.svgSize.width)
@@ -72,22 +73,29 @@ Board.prototype = {
       .style('height', this.svgSize.height)
       .style('margin', this.margins.join(' '));
 
+    this.hatchet = document.createElement('div');
+    this.hatchet.classList.add('hatchet');
+    this.hatchet.setAttribute('style', 'width: ' + this.squareWidth + '; height: ' + this.squareHeight + ';');
+    this.hatchet.style.display = 'none';
+    this.el.appendChild(this.hatchet);
+
     this.healthBar = this.svgContainer.append('g');
 
     this.el.setAttribute('style', 'width:' + (this.svgSize.width + this.margins[1] + this.margins[3]) + 'px;');
     
     this.createCells();
     this.createCharacters();
-    this.setHealth();
+    // this.setHealth();
   },
 
   onDocChange: function() {
     var data = this.app.doc.getModel().getRoot().get('boardState');
     if (data.Version > this.data.Version) {
-      this.data = data;
-      this.createCharacters();
       if (data.GameState == 'dead') {
         this.gameEnded();
+      } else {
+        this.data = data;
+        this.createCharacters();  
       }
       console.log('updating according to brix');
     } else {
@@ -130,9 +138,6 @@ Board.prototype = {
       this.characters
           .enter()
         .append('div')
-        .attr('class', function(d) {
-          return 'character ' + that.getCharacterClass(d.Type);
-        })
         .style('left', function(d) {
           return that.scales.x(that.getRandomInt(0, that.data.Height));
         })
@@ -143,6 +148,16 @@ Board.prototype = {
         .style('height', 0);
 
       this.characters.transition().duration(75)
+        .attr('class', function(d) {
+          var dir = function() {
+            if(that.data.PlayerDir.X != 0) {
+              return that.data.PlayerDir.X > 0 ? 'right' : 'left';
+            } else {
+              return that.data.PlayerDir.Y > 0 ? 'down' : 'up';
+            }
+          }();
+          return 'character ' + that.getCharacterClass(d.Type) + ' ' + dir;
+        })
         .style('left', function(d) {
           return that.scales.x(d.Pos.X);
         })
@@ -174,15 +189,40 @@ Board.prototype = {
     this.cells
         .enter()
       .append('rect')
-      .attr('class', 'tile')
-      .attr('x', function(d) {
-        return that.scales.x(that.getRandomInt(0, that.data.Width));
-      })
-      .attr('y', function(d) {
-        return that.scales.y(that.getRandomInt(0, that.data.Height));
-      })
-      .attr('width', 0)
-      .attr('height', 0);
+        .attr('class', 'tile')
+        .attr('x', function(d) {
+          return that.scales.x(that.getRandomInt(0, that.data.Width));
+        })
+        .attr('y', function(d) {
+          return that.scales.y(that.getRandomInt(0, that.data.Height));
+        })
+        .attr('width', 0)
+        .attr('height', 0)
+        // .each(function(d) {
+        //   var pattern = document.createElement('pattern');
+        //   pattern.setAttribute('patterUnits', 'userSpaceOnUse');
+        //   pattern.setAttribute('width', that.squareWidth);
+        //   pattern.setAttribute('height', that.squareHeight);
+
+
+        //   var image = document.createElement('image');
+        //   image.setAttribute("xlink:href", "img/grass.png");
+        //   image.setAttribute('width', that.squareWidth);
+        //   image.setAttribute('height', that.squareHeight);
+
+        //   pattern.appendChild(image);
+        //   this.appendChild(pattern);
+        // });
+
+    // this.cells
+    //   .append('pattern')
+    //     .attr('patternUnits', 'userSpaceOnUse')
+    //     .attr('width', 0)
+    //     .attr('height', 0)
+    //   .append("image")
+    //     .attr("xlink:href", "img/grass.png")
+    //     .attr('width', 0)
+    //     .attr('height', 0);
 
     // Update
     this.cells.transition().duration(this.duration)
@@ -221,7 +261,7 @@ Board.prototype = {
       emptyHearts[i] = "empty";
     this.empty = this.healthBar.selectAll('heart').data(emptyHearts);
     this.empty.enter().append('heart').attr('class', 'empty');
-  }
+  },
 
   getCharacterClass: function(serverType) {
     switch(serverType) {
@@ -300,6 +340,40 @@ Board.prototype = {
     return data;
   },
 
+  showHatchet: function() {
+    console.log('showint hatchet');
+    var x = this.data.PlayerDir.X + this.data.Objects[0].Pos.X;
+    var y = this.data.PlayerDir.Y + this.data.Objects[0].Pos.Y;
+
+    var left = this.scales.x(x) + this.margins[3];
+    var top = this.scales.y(y) + this.margins[0];
+
+    var that = this;
+    
+    this.hatchet.style.left = left;
+    this.hatchet.style.top = top;
+    this.hatchet.style.display = 'block';
+
+
+
+    var dir = function() {
+      if(that.data.PlayerDir.X != 0) {
+        return that.data.PlayerDir.X > 0 ? 'right' : 'left';
+      } else {
+        return that.data.PlayerDir.Y > 0 ? 'down' : 'up';
+      }
+    }();
+
+    this.hatchet.className = 'hatchet ' + dir + '1';
+
+    setTimeout(function() {
+      that.hatchet.className = 'hatchet ' + dir + '2';
+      setTimeout(function() {
+        that.hatchet.style.display = 'none';
+      }, 150);
+    }, 150);
+  },
+
   createEl: function() {
     var div = document.createElement('div');
     div.innerHTML = this.elString;
@@ -317,6 +391,10 @@ Board.prototype = {
       "Width": 15,
       "Height": 15,
       "Version": -1,
+      "PlayerDir": {
+        "X":1,
+        "Y":0
+      },
       "Objects": [
           {
               "Pos": {

@@ -50,6 +50,11 @@ Game.prototype = {
       case 39: // right arrow
         this.move('d');
         break;
+
+      case 32:
+        this.move('h');
+        this.app.board.showHatchet();
+        break;
     }
   },
 
@@ -100,6 +105,7 @@ Game.prototype = {
 
   hasEnded: function() {
     // Brix document notifying us of a game ending
+    console.log('brix acked an edned game');
     this.gameInProgress = false;
     this.app.el.querySelector('#toggleButton').textContent = "Start";
     window.removeEventListener("keyup", this.uniKeyDown);
@@ -107,37 +113,12 @@ Game.prototype = {
 
   move: function(dir) {
     var that = this;
-    // this.walk(dir);
     var httpReq = new XMLHttpRequest();
     httpReq.onload = function() {
       that.onMoveResponse(httpReq);
     }
     httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/move');
     httpReq.send(JSON.stringify({ "Dir": dir }));
-  },
-
-  walk: function(dir) {
-    var walkTime = 800;
-    $('.player').addClass('walk');
-    setTimeout(function() { $player.removeClass('walk'); }, walkTime);
-    switch(dir) {
-      case 'l':
-        $('.player').addClass('left');
-        setTimeout(function() { $player.removeClass('left'); }, walkTime);
-        break;
-      case 't':
-        $('.player').addClass('top');
-        setTimeout(function() { $player.removeClass('top'); }, walkTime);
-        break;
-      case 'r':
-        $('.player').addClass('right');
-        setTimeout(function() { $player.removeClass('right'); }, walkTime);
-        break;
-      case 'b':
-        $('.player').addClass('bottom');
-        setTimeout(function() { $player.removeClass('bottom'); }, walkTime);
-        break; 
-    }
   },
 
   onMoveResponse: function(xhr) {

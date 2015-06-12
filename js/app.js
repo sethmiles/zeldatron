@@ -18,7 +18,7 @@ App.prototype = {
                 '<div id="auth-btn" class="btn">Authenticate</div>' +
               '</div>' +
               '<div class="game">' +
-                '<div class="title">Zeldatron</div>' +
+                '<div class="title">Legends of Brix</div>' +
                 '<div class="buttons">' +
                   '<div id="toggleButton" class="game-btn"></div>' +
                 '</div>' +
@@ -59,7 +59,7 @@ App.prototype = {
       this.docId = id;
       this.utils.load(id, this.onFileLoaded, this.initializeFile)
     } else {
-      this.utils.createRealtimeFile('Zeldatron Game', function(file) {
+      this.utils.createRealtimeFile('Infinite ACL Zeldatron Game', function(file) {
         if (file.id) {
           that.docId = file.id;
           history.pushState({}, '', '?id=' + file.id);

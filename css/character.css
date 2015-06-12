@@ -23,152 +23,67 @@
 }
 
 /* characters */
-
 .monster {
   background-size: contain;
   background-image: url('../img/monster.png');
 }
 
-.player {
+.hatchet {
   background-size: contain;
-  background-image: url('../img/standingSprite.png');
+  background: url('../img/hatchet.png');
+  position: absolute;
 }
 
-.walk {
-  background-size: contain;
-  background: url('../img/walkingSprite.png');
+.hatchet.left1 {
+  transform:rotate(-30deg);
+}
+
+.hatchet.left2 {
+  transform:rotate(-140deg);
+}
+
+.hatchet.right1 {
+  transform: scaleX(-1) rotate(-30deg);
+}
+
+.hatchet.right2 {
+  transform: scaleX(-1) rotate(-140deg);
+}
+
+.hatchet.down1 {
+  transform: rotate(-170deg);
+}
+
+.hatchet.down2 {
+  transform: rotate(-260deg);
+}
+
+.hatchet.up1 {
+  transform: rotate(-25deg);
+}
+
+.hatchet.up2 {
+  transform: rotate(-95deg);
 }
 
 /* walking animations */
 
-.bottom {
-  -webkit-animation: bottom .8s steps(4) infinite;
-     -moz-animation: bottom .8s steps(4) infinite;
-      -ms-animation: bottom .8s steps(4) infinite;
-       -o-animation: bottom .8s steps(4) infinite;
-          animation: bottom .8s steps(4) infinite;
+.player.down {
+  background-size: contain;
+  background-image: url('../img/down.png');
 }
 
-.top {
-  -webkit-animation: top .8s steps(4) infinite;
-     -moz-animation: top .8s steps(4) infinite;
-      -ms-animation: top .8s steps(4) infinite;
-       -o-animation: top .8s steps(4) infinite;
-          animation: top .8s steps(4) infinite;
+.player.up {
+  background-size: contain;
+  background-image: url('../img/up.png');
 }
 
-.right {
-  -webkit-animation: right .8s steps(4) infinite;
-     -moz-animation: right .8s steps(4) infinite;
-      -ms-animation: right .8s steps(4) infinite;
-       -o-animation: right .8s steps(4) infinite;
-          animation: right .8s steps(4) infinite;
+.player.right {
+  background-size: contain;
+  background-image: url('../img/right.png');
 }
 
-.left {
-  -webkit-animation: left .8s steps(4) infinite;
-     -moz-animation: left .8s steps(4) infinite;
-      -ms-animation: left .8s steps(4) infinite;
-       -o-animation: left .8s steps(4) infinite;
-          animation: left .8s steps(4) infinite;
-}
-
-@-webkit-keyframes bottom {
-  from { background-position: 0px 0px; }
-  to { background-position: -128px 0px; }
-}
-
-@-moz-keyframes bottom {
-  from { background-position: 0px 0px; }
-  to { background-position: -128px 0px; }
-}
-
-@-ms-keyframes bottom {
-  from { background-position: 0px 0px; }
-  to { background-position: -128px 0px; }
-}
-
-@-o-keyframes bottom {
-  from { background-position: 0px 0px; }
-  to { background-position: -128px 0px; }
-}
-
-@keyframes bottom {
-  from { background-position: 0px 0px; }
-  to { background-position: -128px 0px; }
-}
-
-@-webkit-keyframes right {
-  from { background-position: 0px -32px; }
-  to { background-position: -128px -32px; }
-}
-
-@-moz-keyframes right {
-  from { background-position: 0px -32px; }
-  to { background-position: -128px -32px; }w
-}
-
-@-ms-keyframes right {
-  from { background-position: 0px -32px; }
-  to { background-position: -128px -32px; }
-}
-
-@-o-keyframes right {
-  from { background-position: 0px -32px; }
-  to { background-position: -128px -32px; }
-}
-
-@keyframes right {
-  from { background-position: 0px -32px; }
-  to { background-position: -128px -32px; }
-}
-
-@-webkit-keyframes left {
-  from { background-position: 0px -64px; }
-  to { background-position: -128px -64px; }
-}
-
-@-moz-keyframes left {
-  from { background-position: 0px -64px; }
-  to { background-position: -128px -64px; }
-}
-
-@-ms-keyframes left {
-  from { background-position: 0px -64px; }
-  to { background-position: -128px -64px; }
-}
-
-@-o-keyframes left {
-  from { background-position: 0px -64px; }
-  to { background-position: -128px -64px; }
-}
-
-@keyframes left {
-  from { background-position: 0px -64px; }
-  to { background-position: -128px -64px; }
-}
-
-@-webkit-keyframes top {
-  from { background-position: 0px -96x; }
-  to { background-position: -128px -96px; }
-}
-
-@-moz-keyframes top {
-  from { background-position: 0px -96px; }
-  to { background-position: -128px -96px; }
-}
-
-@-ms-keyframes top {
-  from { background-position: 0px -96px; }
-  to { background-position: -128px -96px; }
-}
-
-@-o-keyframes top {
-  from { background-position: 0px -96px; }
-  to { background-position: -128px -96px; }
-}
-
-@keyframes top {
-  from { background-position: 0px -96px; }
-  to { background-position: -128px -96px; }
+.player.left {
+  background-size: contain;
+  background-image: url('../img/left.png');
 }

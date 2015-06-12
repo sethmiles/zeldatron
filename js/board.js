@@ -456,6 +456,7 @@ Board.prototype = {
         "X":1,
         "Y":0
       },
+      "Health": 5,
       "Objects": [
           {
               "Pos": {
@@ -486,7 +487,7 @@ Board.prototype = {
                   "X": 2,
                   "Y": 8
               },
-              "Type": "m",
+              "Type": "r",
               "Id": 3
           },
           {
@@ -494,7 +495,7 @@ Board.prototype = {
                   "X": 10,
                   "Y": 8
               },
-              "Type": "m",
+              "Type": "t",
               "Id": 4
           },
           {
@@ -502,7 +503,7 @@ Board.prototype = {
                   "X": 6,
                   "Y": 4
               },
-              "Type": "m",
+              "Type": "b",
               "Id": 5
           }
       ]

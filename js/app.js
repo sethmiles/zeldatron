@@ -47,6 +47,7 @@ App.prototype = {
     this.onAuthComplete = this.onAuthComplete.bind(this);
     this.onFileLoaded = this.onFileLoaded.bind(this);
     this.toggleGameState = this.toggleGameState.bind(this);
+    this.initializeFile = this.initializeFile.bind(this);
   },
 
   start: function() {
@@ -78,7 +79,7 @@ App.prototype = {
   },
 
   initializeFile: function(model) {
-    model.getRoot().set('boardState', {});
+    model.getRoot().set('boardState', this.board.defaultBoard);
   },
 
   onAuthComplete: function(response) {

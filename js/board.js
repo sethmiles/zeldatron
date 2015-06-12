@@ -20,6 +20,7 @@ Board.prototype = {
   setBindings: function() {
     this.onWindowSizeChange = this.onWindowSizeChange.bind(this);
     this.onDocChange = this.onDocChange.bind(this);
+    this.onNewDocChange = this.onNewDocChange.bind(this);
   },
 
   buildExisting: function() {
@@ -34,18 +35,20 @@ Board.prototype = {
   },
 
   buildNew: function() {
-    this.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onDocChange);
-    this.data = this.app.doc.getModel().getRoot().get('boardState');
-    this.updateAll();
-  },
-
-  reset: function() {
     var that = this;
     this.data = this.emptyData;
     this.updateAll();
     setTimeout(function(){
-      that.buildNew();
+      this.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onNewDocChange);
     }, this.duration);
+    
+  },
+
+  onNewDocChange: function() {
+    this.app.doc.getModel().getRoot().removeEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onNewDocChange);
+    this.data = this.app.doc.getModel().getRoot().get('boardState');
+    this.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onDocChange);
+    this.updateAll();
   },
 
   destroy: function() {
@@ -76,8 +79,15 @@ Board.prototype = {
   },
 
   onDocChange: function() {
-    this.data = this.app.doc.getModel().getRoot().get('boardState');
-    this.createCharacters();
+    var data = this.app.doc.getModel().getRoot().get('boardState');
+    if (data.Version > this.data.Version) {
+      this.data = data;
+      this.createCharacters();
+      console.log('updating according to brix');
+    } else {
+      console.log('brix is out of data, ignoring event');
+    }
+    
   },
 
   updateAll: function() {
@@ -86,8 +96,13 @@ Board.prototype = {
   },
 
   setData: function(data) {
-    this.data = data;
-    this.updateAll();
+    if (data.Version > this.data.Version) {
+      this.data = data;
+      this.createCharacters();
+      console.log('applying immediate change');
+    } else {
+      console.log('brix is more updated than immediate change');
+    }
   },
 
   createCharacters: function() {
@@ -113,7 +128,7 @@ Board.prototype = {
         .style('width', 0)
         .style('height', 0);
 
-      this.characters //.transition().duration(500)
+      this.characters.transition().duration(75)
         .style('left', function(d) {
           return that.scales.x(d.Pos.X);
         })
@@ -262,12 +277,14 @@ Board.prototype = {
   emptyData: {
     "Width": 0,
     "Height": 0,
+    "Version": -1,
     "Objects": []
   },
 
   defaultBoard: {
       "Width": 15,
       "Height": 15,
+      "Version": -1,
       "Objects": [
           {
               "Pos": {

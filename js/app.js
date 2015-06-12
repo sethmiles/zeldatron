@@ -36,8 +36,9 @@ App.prototype = {
     this.utils.authorize(this.onAuthComplete, false);
 
     // Create new instance of Game
-    this.game = new Game(this);
     this.board = new Board(this);
+    this.game = new Game(this, this.board);
+    
     this.el.querySelector('.game').appendChild(this.board.el);
     this.el.querySelector('#startButton').addEventListener('click', this.toggleGameState);
   },
@@ -60,7 +61,7 @@ App.prototype = {
     } else {
       this.utils.createRealtimeFile('Zeldatron Game', function(file) {
         if (file.id) {
-          that.docId = id;
+          that.docId = file.id;
           history.pushState({}, '', '?id=' + file.id);
           that.utils.load(file.id, that.onFileLoaded, that.initializeFile);
         }
@@ -72,14 +73,23 @@ App.prototype = {
     var that = this;
     this.doc = doc;
     this.el.classList.remove('unauthenticated');
-    // This is used for effect and to ensure that everything is already attached to the DOM
-    setTimeout(function(){
-      that.board.build();
-    }, 500);
+    if(doc.getModel().getRoot().get('gameState')){
+      // A game is in progress
+        // This is used for effect and to ensure that everything is already attached to the DOM
+      setTimeout(function(){
+        that.board.buildExisting();
+      }, 500);
+    } else {
+      // This game hasn't started yet
+      setTimeout(function(){
+        that.board.buildDemo();
+      }, 500);
+    }
   },
 
   initializeFile: function(model) {
     model.getRoot().set('boardState', this.board.defaultBoard);
+    model.getRoot().set('gameState', false);
   },
 
   onAuthComplete: function(response) {

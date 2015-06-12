@@ -4,16 +4,18 @@
 }
 
 .rock {
+  background-size: contain;
   background-image: url('../img/rock.png');
 }
 
 .tree {
+  background-size: contain;
   background-image: url('../img/tree.png');
 }
 
 .player {
-  background-image: url('../img/standingSprite.png');
   background-size: contain;
+  background-image: url('../img/standingSprite.png');
 }
 
 .walk {

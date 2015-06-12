@@ -22,17 +22,46 @@ Board.prototype = {
     this.onDocChange = this.onDocChange.bind(this);
   },
 
-  build: function() {
-    this.data = this.app.doc.getModel().getRoot().get('boardState');
+  buildExisting: function() {
     this.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onDocChange);
-    window.addEventListener('resize', this.onWindowSizeChange)
-    this.setScales();
+    this.data = this.app.doc.getModel().getRoot().get('boardState');
+    this.build();
+  },
 
+  buildDemo: function() {
+    this.data = this.defaultBoard;
+    this.build();
+  },
+
+  buildNew: function() {
+    this.app.doc.getModel().getRoot().addEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onDocChange);
+    this.data = this.app.doc.getModel().getRoot().get('boardState');
+    this.updateAll();
+  },
+
+  reset: function() {
+    var that = this;
+    this.data = this.emptyData;
+    this.updateAll();
+    setTimeout(function(){
+      that.buildNew();
+    }, this.duration);
+  },
+
+  destroy: function() {
+    this.app.doc.getModel().getRoot().removeEventListener(gapi.drive.realtime.EventType.VALUE_CHANGED, this.onDocChange);
+  },
+
+  build: function() {
+    window.addEventListener('resize', this.onWindowSizeChange);
+    this.setScales();
     this.svgContainer = d3.select(this.el)
-      .append('svg')
+        .append('svg')
       .attr('width', this.svgSize.width)
       .attr('height', this.svgSize.height)
       .style('margin', this.margins.join(' '));
+
+    this.cellsContainer = this.svgContainer.append('g');
 
     this.characterContainer = d3.select(this.el).append('div')
       .attr('class', 'character-container')
@@ -44,17 +73,21 @@ Board.prototype = {
 
     this.createCells();
     this.createCharacters();
-    this.updateCells();
   },
 
   onDocChange: function() {
     this.data = this.app.doc.getModel().getRoot().get('boardState');
-    this.updateBoard();
-
+    this.createCharacters();
   },
 
-  updateBoard: function() {
+  updateAll: function() {
     this.createCharacters();
+    this.createCells();
+  },
+
+  setData: function(data) {
+    this.data = data;
+    this.updateAll();
   },
 
   createCharacters: function() {
@@ -80,7 +113,7 @@ Board.prototype = {
         .style('width', 0)
         .style('height', 0);
 
-      this.characters.transition().duration(500)
+      this.characters //.transition().duration(500)
         .style('left', function(d) {
           return that.scales.x(d.Pos.X);
         })
@@ -89,6 +122,58 @@ Board.prototype = {
         })
         .style('width', this.squareWidth)
         .style('height', this.squareHeight);
+
+      this.characters
+          .exit().transition().duration(this.duration)
+        .style('left', function(d) {
+          return that.scales.x(that.getRandomInt(0, that.data.Height));
+        })
+        .style('right', function(d) {
+          return that.scales.y(that.getRandomInt(0, that.data.Height));
+        })
+        .style('width', 0)
+        .style('height', 0)
+        .remove();
+  },
+
+  createCells: function() {
+    var that = this;
+    // Enter
+    this.cells = this.cellsContainer.selectAll('rect')
+        .data(this.getCellData());
+
+    this.cells
+        .enter()
+      .append('rect')
+      .attr('class', 'tile')
+      .attr('x', function(d) {
+        return that.scales.x(that.getRandomInt(0, that.data.Width));
+      })
+      .attr('y', function(d) {
+        return that.scales.y(that.getRandomInt(0, that.data.Height));
+      })
+      .attr('width', 0)
+      .attr('height', 0);
+
+    // Update
+    this.cells.transition().duration(this.duration)
+      .attr('x', function (d) { return that.scales.x(d.x); })
+      .attr('y', function (d) { return that.scales.y(d.y); })
+      .attr('width', that.squareWidth)
+      .attr('height', that.squareHeight);
+
+    // Exit
+    this.cells
+        .exit().transition().duration(this.duration)
+      .attr('x', function(d) {
+        return that.scales.x(that.getRandomInt(0, that.data.Width));
+      })
+      .attr('y', function(d) {
+        return that.scales.y(that.getRandomInt(0, that.data.Height));
+      })
+      .attr('width', 0)
+      .attr('height', 0)
+      .remove();
   },
 
   getCharacterClass: function(serverType) {
@@ -97,6 +182,10 @@ Board.prototype = {
         return 'player';
       case 'm':
         return 'monster';
+      case 't':
+        return 'tree';
+      case 'r':
+        return 'rock';
     }
   },
 
@@ -110,7 +199,7 @@ Board.prototype = {
 
   onWindowSizeChange: function() {
     this.setScales();
-    this.updateCells();
+    this.createCells();
     this.updateContainers();
     this.createCharacters();
   },
@@ -147,35 +236,8 @@ Board.prototype = {
     }
   },
 
-  createCells: function() {
-    var that = this;
-    this.cellsContainer = this.svgContainer.append('g');
-      this.cells = this.cellsContainer.selectAll('rect')
-          .data(this.getCellData())
-        .enter()
-        .append('rect')
-        .attr('class', 'tile')
-        .attr('x', function(d) {
-          return that.scales.x(that.getRandomInt(0, that.data.Width));
-        })
-        .attr('y', function(d) {
-          return that.scales.y(that.getRandomInt(0, that.data.Height));
-        })
-        .attr('width', 0)
-        .attr('height', 0);
-  },
-
   getRandomInt: function(lowerBound, uppderBound) {
     return Math.floor(Math.random() * (uppderBound + 1));
-  },
-
-  updateCells: function() {
-    var that = this;
-    this.cells.transition().duration(this.duration)
-      .attr('x', function (d) { return that.scales.x(d.x); })
-      .attr('y', function (d) { return that.scales.y(d.y); })
-      .attr('width', that.squareWidth)
-      .attr('height', that.squareHeight);
   },
 
   getCellData: function() {
@@ -197,8 +259,13 @@ Board.prototype = {
     this.el = div.children[0];
   },
 
+  emptyData: {
+    "Width": 0,
+    "Height": 0,
+    "Objects": []
+  },
+
   defaultBoard: {
-      "NewGame": true,
       "Width": 15,
       "Height": 15,
       "Objects": [

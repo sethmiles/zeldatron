@@ -144,16 +144,7 @@ svg .tile {
   left: 0;
 }
 
-
 .character {
   position: absolute;
-}
-
-.m {
-  background-color: red;
-}
-
-.p {
-  background-color: blue;
 }
 

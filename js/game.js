@@ -1,5 +1,6 @@
-var Game = function(app) {
+var Game = function(app, board) {
   this.app = app;
+  this.board = board;
   this.init();
 }
 
@@ -9,28 +10,46 @@ Game.prototype = {
 
   init: function() {
     this.setBindings();
-    window.addEventListener("keyup", this.uniKeyDown, false);
+  },
+
+  setBindings: function() {
+    this.uniKeyDown = this.uniKeyDown.bind(this);
+    this.move = this.move.bind(this);
+    this.toggle = this.toggle.bind(this);
   },
 
   uniKeyDown: function(e) {
     switch (e.keyCode) {
+      
       case 87: // w
         this.move('w');
         break;
+      case 38: // up arrow
+        this.move('w');
+        break;
+
       case 65: // a
         this.move('a');
         break;
+      case 37: // left arrow
+        this.move('a');
+        break;
+
+
       case 83: // s
         this.move('s');
         break;
+      case 40: // down arrow
+        this.move('s');
+        break;
+
       case 68: // d
         this.move('d');
         break;
+      case 39: // right arrow
+        this.move('d');
+        break;
     }
-  },
-
-  reqListener: function() {
-    console.log(this.responseText);
   },
 
   toggle: function() {
@@ -45,25 +64,25 @@ Game.prototype = {
   startGame: function() {
     this.reset();
     this.gameInProgress = true;
-
-    // this.ping();
+    this.board.reset();
+    window.addEventListener("keyup", this.uniKeyDown);
   },
 
   endGame: function() {
-    // this.end();
     this.gameInProgress = false;
+    this.game.destroy();
+    window.removeEventListener("keyup", this.uniKeyDown);
   },
 
   move: function(dir) {
+    var that = this;
     // this.walk(dir);
     var httpReq = new XMLHttpRequest();
-    httpReq.onload = this.reqListener;
+    httpReq.onload = function() {
+      that.onMoveResponse(httpReq);
+    }
     httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/move');
-    httpReq.send({ "Dir": dir });
-  },
-
-  ping: function() {
-    this.makeCorsRequest('http://craigdh.bld.corp.google.com:8080/ping');
+    httpReq.send(JSON.stringify({ "Dir": dir }));
   },
 
   walk: function(dir) {
@@ -92,52 +111,19 @@ Game.prototype = {
 
   reset: function() {
     var httpReq = new XMLHttpRequest();
-    httpReq.onload = this.reqListener();
+    httpReq.onload = this.onResetResponse;
     httpReq.open('POST', 'http://craigdh.bld.corp.google.com:8080/reset');
-    httpReq.send(
-      JSON.stringify({ Token: gapi.auth.getToken().access_token, DocId: this.app.docId}));
+    httpReq.send(JSON.stringify({
+        Token: gapi.auth.getToken().access_token,
+        DocId: this.app.docId
+      }));
   },
 
-  setBindings: function() {
-    this.uniKeyDown = this.uniKeyDown.bind(this);
-    this.move = this.move.bind(this);
+  onMoveResponse: function(xhr) {
+    this.board.setData(JSON.parse(xhr.responseText))
   },
 
-  // Create the XHR object.
-  createCORSRequest: function(method, url) {
-    var xhr = new XMLHttpRequest();
-    if ("withCredentials" in xhr) {
-      // XHR for Chrome/Firefox/Opera/Safari.
-      xhr.open(method, url, true);
-    } else if (typeof XDomainRequest != "undefined") {
-      // XDomainRequest for IE.
-      xhr = new XDomainRequest();
-      xhr.open(method, url);
-    } else {
-      // CORS not supported.
-      xhr = null;
-    }
-    return xhr;
-  },
-
-  // Make the actual CORS request.
-  makeCorsRequest: function(url) {
-    var xhr = this.createCORSRequest('GET', url);
-    if (!xhr) {
-      alert('CORS not supported');
-      return;
-    }
-
-    // Response handlers.
-    xhr.onload = function() {
-      var text = xhr.responseText;
-      alert('Response from CORS request to ' + url + ': ' + title);
-    };
-
-    xhr.onerror = function() {
-      alert('Woops, there was an error making the request.');
-    };
-
-    xhr.send();
+  onResetResponse: function(xhr) {
+    console.log(xhr.responseText);
   }
 }

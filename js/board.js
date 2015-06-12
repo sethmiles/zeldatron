@@ -221,7 +221,7 @@ Board.prototype = {
       emptyHearts[i] = "empty";
     this.empty = this.healthBar.selectAll('heart').data(emptyHearts);
     this.empty.enter().append('heart').attr('class', 'empty');
-  }
+  },
 
   getCharacterClass: function(serverType) {
     switch(serverType) {

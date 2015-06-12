@@ -72,10 +72,13 @@ Board.prototype = {
       .style('height', this.svgSize.height)
       .style('margin', this.margins.join(' '));
 
-    this.el.setAttribute('style', 'width:' + (this.svgSize.width + this.margins[1] + this.margins[3]) + 'px;');
+    this.healthBar = this.svgContainer.append('g');
 
+    this.el.setAttribute('style', 'width:' + (this.svgSize.width + this.margins[1] + this.margins[3]) + 'px;');
+    
     this.createCells();
     this.createCharacters();
+    this.setHealth();
   },
 
   onDocChange: function() {
@@ -201,6 +204,24 @@ Board.prototype = {
       .attr('height', 0)
       .remove();
   },
+
+  setHealth: function() {
+    var health = that.data.Health;
+    this.hearts = this.healthBar.selectAll('heart').data([0, 1, 2, 3, 4]);
+    this.hearts
+      .enter()
+      .append('li')
+      .attr('class', 'heart')
+      .attr('x', function (d) { return this.scales.x(d.x); })
+      .attr('y', function (d) { return this.scales.y(d.y); })
+      .attr('width', this.squareWidth)
+      .attr('height', this.squareHeight);;
+    var emptyHearts = [];
+    for (var i = 5; i > health; i--)
+      emptyHearts[i] = "empty";
+    this.empty = this.healthBar.selectAll('heart').data(emptyHearts);
+    this.empty.enter().append('heart').attr('class', 'empty');
+  }
 
   getCharacterClass: function(serverType) {
     switch(serverType) {

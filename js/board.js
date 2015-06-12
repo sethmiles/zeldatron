@@ -275,6 +275,17 @@ Board.prototype = {
       })
       .style('width', that.squareWidth)
       .style('height', that.squareHeight);
+
+    this.hearts
+      .attr('class', function(d) {
+        if (d.status == 0) {
+          return 'empty';
+        } else {
+          return 'heart';
+        }        
+      })
+      .style('width', that.squareWidth)
+      .style('height', that.squareHeight);
   },
 
   getHealth: function() {

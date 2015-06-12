@@ -8,7 +8,7 @@ body {
 
 #zeldatron {
   transition: all 1s;
-  background-color: #8D6E63;
+  background-color: #795548;
   font-family: 'Raleway', sans-serif;
   position: absolute;
   top: 0;
@@ -116,6 +116,7 @@ body {
 
 .game .title {
   font-family: 'Press Start 2P', cursive;
+  color: white;
   font-size: 45px;
   padding: 20px;
   text-align: center;
